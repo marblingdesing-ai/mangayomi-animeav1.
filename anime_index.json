@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "isFullData": false,
+    "typeSource": "single",
+    "dateFormat": "",
+    "dateFormatLocale": "",
+    "id": 1847302101,
+    "notes": "Experimental. Catálogo vía API no oficial. Voe/MP4Upload mediante extractores de Mangayomi; reproducción no verificada.",
+    "lang": "es",
+    "sourceCodeLanguage": 1,
+    "appMinVerReq": "0.5.0",
+    "isManga": false,
+    "sourceCodeUrl": "https://raw.githubusercontent.com/marblingdesing-ai/mangayomi-animeav1./main/animeav1.js",
+    "name": "AnimeAV1",
+    "version": "0.1.0",
+    "baseUrl": "https://animeav1.com",
+    "hasCloudflare": false,
+    "additionalParams": "",
+    "apiUrl": "https://animeav1.ahmedrangel.com/api",
+    "iconUrl": "https://animeav1.com/favicon.ico",
+    "itemType": 1,
+    "isNsfw": false
+  }
+]
