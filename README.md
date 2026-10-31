@@ -20,6 +20,26 @@ Mangayomi ni en Onn TV. No hace falta activar GitHub Pages.
 
 ## Alcance y límites
 
+### Corrección de portadas — 0.1.1
+
+Las tarjetas de catálogo y búsqueda convierten únicamente la ruta conocida
+`https://cdn.animeav1.com/thumbnails/` a `/covers/`, conservando el identificador
+y el resto de la URL. Es la misma ruta de portada que entrega la ficha del anime.
+Las portadas que ya llegan con `/covers/` se conservan. No se hace ninguna
+consulta extra por tarjeta ni se descargan fichas para construir el catálogo.
+
+Validación del cambio: **10 pruebas locales aprobadas**, incluidas búsquedas,
+episodios y extractores simulados. Se compararon tres novedades reales (Keroro
+Gunsou, Tokyo Revengers: Santen Sensou-hen y Uchi no Otouto-domo ga Sumimasen):
+las URLs normalizadas coincidieron exactamente con `cover` de sus fichas y las
+tres imágenes respondieron HTTP 200 con tipo `image/jpeg`. La búsqueda real de
+`naruto` ya devuelve imágenes de `/covers/`.
+
+Actualizá el catálogo y la extensión a **0.1.1**. Si Mangayomi conserva tarjetas
+anteriores, volvé a cargar la lista; podría ser necesario limpiar su caché de
+imágenes. La visualización dentro de Mangayomi TV queda por confirmar en el
+dispositivo. Esta corrección no cambia la resolución de servidores de video.
+
 - Explorar muestra los últimos animes actualizados, sin ranking de popularidad.
 - Novedades elimina episodios repetidos del mismo anime y no inventa paginación.
 - Búsqueda usa la paginación de la API. Fichas incluyen sinopsis, géneros,

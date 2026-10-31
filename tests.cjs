@@ -14,6 +14,30 @@ function extension(data, statusCode = 200, extractors = {}) {
 }
 const ok = data => ({ success: true, data });
 const media = (slug, number) => ({ title: slug, cover: 'cover', url: 'https://animeav1.com/media/' + slug + (number ? '/' + number : '') });
+test('browse uses series covers with one API request, including duplicate episodes', async () => {
+  const item = { ...media('show', 3), cover: 'https://cdn.animeav1.com/thumbnails/4449.jpg' };
+  const { ext, calls } = extension(ok([item, item]));
+  const result = await ext.getPopular(1);
+  assert.equal(result.list.length, 1);
+  assert.equal(result.list[0].imageUrl, 'https://cdn.animeav1.com/covers/4449.jpg');
+  assert.equal(calls.length, 1);
+});
+test('search normalizes thumbnails and preserves official covers without extra requests', async () => {
+  const { ext, calls } = extension(ok({ media: [
+    { ...media('a'), cover: 'https://cdn.animeav1.com/thumbnails/1.jpg?x=2' },
+    { ...media('b'), cover: 'https://cdn.animeav1.com/covers/2.jpg' }
+  ], hasNextPage: true }));
+  const result = await ext.search('show', 1);
+  assert.equal(result.list[0].imageUrl, 'https://cdn.animeav1.com/covers/1.jpg?x=2');
+  assert.equal(result.list[1].imageUrl, 'https://cdn.animeav1.com/covers/2.jpg');
+  assert.equal(result.hasNextPage, true);
+  assert.equal(calls.length, 1);
+});
+test('cover normalization handles missing images and leaves other hosts untouched', () => {
+  const { ext } = extension(ok({}));
+  assert.equal(ext.coverImage(null), '');
+  assert.equal(ext.coverImage('https://other.example/thumbnails/1.jpg'), 'https://other.example/thumbnails/1.jpg');
+});
 test('latest strips episode numbers, deduplicates, stops pagination', async () => {
   const { ext, calls } = extension(ok([media('show-2', 3), media('show-2', 2)]));
   const result = await ext.getLatestUpdates(1);

@@ -12,7 +12,7 @@
     "isManga": false,
     "sourceCodeUrl": "https://raw.githubusercontent.com/marblingdesing-ai/mangayomi-animeav1./main/animeav1.js",
     "name": "AnimeAV1",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "baseUrl": "https://animeav1.com",
     "hasCloudflare": false,
     "additionalParams": "",

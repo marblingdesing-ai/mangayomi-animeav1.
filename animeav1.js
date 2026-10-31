@@ -33,10 +33,18 @@ class DefaultExtension extends MProvider {
     return { slug: match[1], number: match[2] };
   }
 
+  coverImage(image) {
+    // The CDN uses the same anime ID for episode thumbnails and series covers.
+    // Normalize only AnimeAV1's known CDN path; no per-card API requests.
+    return typeof image === 'string'
+      ? image.replace(/^(https:\/\/cdn\.animeav1\.com\/)thumbnails\//i, '$1covers/')
+      : '';
+  }
+
   card(item) {
     if (!item || typeof item.title !== 'string') throw new Error('AnimeAV1: ficha inválida.');
     const slug = this.mediaPath(item.url).slug;
-    return { name: item.title, imageUrl: item.cover || '', link: 'https://animeav1.com/media/' + slug };
+    return { name: item.title, imageUrl: this.coverImage(item.cover), link: 'https://animeav1.com/media/' + slug };
   }
 
   // The API has no popularity ranking; browse deliberately shows recent anime.
@@ -79,7 +87,7 @@ class DefaultExtension extends MProvider {
     }).filter(ep => { if (seen.has(ep.url)) return false; seen.add(ep.url); return true; });
     return {
       name: data.title, link: 'https://animeav1.com/media/' + slug,
-      imageUrl: data.cover || '', description: data.synopsis || '',
+      imageUrl: this.coverImage(data.cover), description: data.synopsis || '',
       genre: Array.isArray(data.genres) ? data.genres : [],
       status: /finalizado|finished|completed/.test(status) ? 1 : /emisi[oó]n|ongoing/.test(status) ? 0 : 5,
       chapters: chapters
